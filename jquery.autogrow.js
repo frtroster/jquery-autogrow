@@ -65,7 +65,16 @@
 		init: function() {			
 			var self = this;			
 			this.textarea.css({overflow: 'hidden', display: 'block'});
-			this.textarea.bind('focus', function() { self.startExpand() } ).bind('blur', function() { self.stopExpand() });
+			this.textarea.bind('focus', function() {         
+        //if textarea has width set in %, dummy div has wrong dimensions
+        if(!self.textarea.attr('autogrow-fix')) {
+          //fix dummy width if textarea width wasn't determined properly before
+          self.dummy.css('width', self.textarea.innerWidth());
+          self.dummy.html('');
+          self.textarea.attr('autogrow-fix', 'true');
+        }
+				self.startExpand();
+      }).bind('blur', function() { self.stopExpand() });
 			this.checkExpand();	
 		},
 						 
